@@ -3,8 +3,9 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Filter;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\HeaderFilter;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class HeaderFilterTest extends PHPUnit_Framework_Testcase
+class HeaderFilterTest extends \PHPUnit_Framework_TestCase
 {
     protected static $instance;
 
@@ -14,6 +15,7 @@ class HeaderFilterTest extends PHPUnit_Framework_Testcase
     public function testThrowExceptionFilter()
     {
         self::$instance = new HeaderFilter();
+        self::$instance->setDispatcher(new EventDispatcher);
         self::$instance->setHasHeader(true);
         $row = array();
         self::$instance->filter($row);
@@ -31,7 +33,8 @@ class HeaderFilterTest extends PHPUnit_Framework_Testcase
     public function testFilterNeverThrowsException()
     {
         $row = array();
-        $filter = new HeaderFilter;
+        $filter = new HeaderFilter();
+        $filter->setDispatcher(new EventDispatcher);
         $filter->setHasHeader(false);
         $this->assertEquals($row, $filter->filter($row));
         $this->assertEquals($row, $filter->filter($row));

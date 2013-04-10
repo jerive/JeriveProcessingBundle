@@ -45,12 +45,12 @@ class HeaderFilter extends AbstractFilter
      * @param mixed $row
      * @return mixed
      */
-    public function filter(&$row)
+    public function filter($row)
     {
         // Do not process header if there is a header
-        if ($this->_hasHeader && ! $this->_headerSkipped) {
-            $this->_headerSkipped = true;
-            $this->processing->getDispatcher()->dispatch(
+        if ($this->hasHeader && ! $this->headerSkipped) {
+            $this->headerSkipped = true;
+            $this->dispatcher->dispatch(
                 self::EVENT_HEADER,
                 new LineEvent(1, $row)
             );
@@ -65,7 +65,7 @@ class HeaderFilter extends AbstractFilter
      */
     public function getDescription()
     {
-        if ($this->_hasHeader) {
+        if ($this->hasHeader) {
             return 'The first line will be skipped as it is the header';
         }
     }

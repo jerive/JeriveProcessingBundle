@@ -1,0 +1,22 @@
+{
+    "name": "jerive/file-processing-bundle",
+    "description": "Provides batch processing utilities",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jerive",
+            "email": "jerome.viveret@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+	"symfony/event-dispatcher": "v2.2.x-dev"
+    },
+    "require-dev": {
+        "mikey179/vfsStream": "v1.2.0"
+    },
+    "autoload": {
+        "psr-0": { "Jerive\\Bundle\\FileProcessingBundle": "" }
+    },
+    "target-dir": "Jerive/Bundle/FileProcessingBundle"
+}

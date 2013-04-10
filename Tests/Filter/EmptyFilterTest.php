@@ -4,7 +4,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Filter;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\EmptyFilter;
 
-class EmptyFilterTest extends PHPUnit_Framework_Testcase
+class EmptyFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \Jerive\Bundle\FileProcessingBundle\Processing\Exception\SkipException

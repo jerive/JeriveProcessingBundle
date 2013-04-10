@@ -4,7 +4,11 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Iterator;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Iterator\CsvReader;
 
-class CsvReaderTest extends PHPUnit_Framework_Testcase
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
+
+class CsvReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testWillLoadFile()
     {

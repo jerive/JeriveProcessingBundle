@@ -3,20 +3,21 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\BaseIterator;
 use Jerive\Bundle\FileProcessingBundle\Processing\Iterator\CsvReader;
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\CallbackFilter;
 
-class BaseIteratorTest extends PHPUnit_Framework_TestCase
+class BaseIteratorTest extends \PHPUnit_Framework_TestCase
     implements EventSubscriberInterface
 {
     protected $errors = 0;
 
     public function testSimple()
     {
-        $processing = new BaseIterator;
+        $processing = new BaseIterator(new EventDispatcher);
         $processing->setIterator(
             $reader = CsvReader::factory('')
         );
@@ -30,17 +31,17 @@ class BaseIteratorTest extends PHPUnit_Framework_TestCase
      */
     public function testSimpleWillFailIfNoIteratorIsSet()
     {
-        $processing = new BaseIterator;
+        $processing = new BaseIterator(new EventDispatcher);
         $processing->process();
     }
 
     public function testWillDispatchErrorOnFailure()
     {
-        $processing = new BaseIterator;
+        $processing = new BaseIterator(new EventDispatcher);
         $processing->addFilter(new CallbackFilter(array(
             'callback' => array($this, 'willThrowException'),
         )));
-        $processing->setIterator(new ArrayIterator(array(1)));
+        $processing->setIterator(new \ArrayIterator(array(1)));
         $processing->getDispatcher()->addSubscriber($this);
 
         $processing->process();

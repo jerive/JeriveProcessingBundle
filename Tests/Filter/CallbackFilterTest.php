@@ -4,7 +4,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Filter;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\CallbackFilter;
 
-class CallbackFilterTest extends PHPUnit_Framework_Testcase
+class CallbackFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException RuntimeException

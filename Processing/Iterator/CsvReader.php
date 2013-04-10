@@ -7,7 +7,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Iterator;
  *
  * @author Jérôme Viveret <jviveret@consoneo.com>
  */
-class CsvReader implements Iterator
+class CsvReader implements \Iterator
 {
     /**
      * @var handle

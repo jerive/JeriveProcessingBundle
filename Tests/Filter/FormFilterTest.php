@@ -7,7 +7,7 @@ use Jerive\Bundle\FileProcessingBundle\Processing\Filter\FormFilter;
 /**
  * @author jviveret
  */
-class FormFilterTest extends PHPUnit_Framework_Testcase
+class FormFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \Jerive\Bundle\FileProcessingBundle\Processing\Exception\FailedValidationException

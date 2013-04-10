@@ -112,7 +112,7 @@ class BaseIterator implements \Iterator
             $this->filters[] = $filter;
         }
 
-        $filter->setProcessing($this);
+        $filter->setDispatcher($this->dispatcher);
         return $this;
     }
 
@@ -265,19 +265,19 @@ class BaseIterator implements \Iterator
     public function rewind()
     {
         $this->key = 0;
-        $this->iterator->rewind();
+        $this->getIterator()->rewind();
     }
 
     public function valid()
     {
-        $parentValid = $this->iterator->valid();
+        $parentValid = $this->getIterator()->valid();
 
     }
 
     protected function getNext()
     {
-        $rowRaw = $this->iterator->current();
-        $key    = $this->iterator->key();
+        $rowRaw = $this->getIterator()->current();
+        $key    = $this->getIterator()->key();
 
         $this->dispatcher->dispatch(
             self::EVENT_LINE_PROCESSING,
@@ -292,7 +292,7 @@ class BaseIterator implements \Iterator
             );
             return $rowFiltered;
         } catch (\Exception $e) {
-            $this->iterator->next();
+            $this->getIterator()->next();
             return $this->getNext();
         }
     }

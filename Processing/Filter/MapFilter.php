@@ -95,7 +95,7 @@ class MapFilter extends AbstractFilter
      *     If the number of fields expected does not match the actual number of fields
      * @return array
      */
-    public function filter(&$row)
+    public function filter($row)
     {
         $nbFields = count($row);
         $diff     = $nbFields - $this->fieldNumber;
@@ -112,7 +112,7 @@ class MapFilter extends AbstractFilter
                 $diff += 1;
             }
         } elseif ($diff != 0) {
-            throw new RuntimeException(
+            throw new \RuntimeException(
                 sprintf(_('Number of fields does not match : %s expected but %s found'),
                 $this->fieldNumber,
                 $nbFields

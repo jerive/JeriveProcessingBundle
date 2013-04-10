@@ -63,7 +63,7 @@ class CallbackFilter extends AbstractFilter
      * @param mixed $row
      * @return mixed
      */
-    public function filter(&$row)
+    public function filter($row)
     {
         if ($this->callArray) {
             $return = call_user_func_array($this->importMethod, $row);

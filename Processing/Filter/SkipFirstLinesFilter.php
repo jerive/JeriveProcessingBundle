@@ -9,7 +9,7 @@ use Jerive\Bundle\FileProcessingBundle\Processing\Exception\SkipException;
  *
  * @author jviveret
  */
-class SkipFirstLinesFilter extends FilterInterface
+class SkipFirstLinesFilter extends AbstractFilter
 {
     /**
      * How many lines will be skipped
@@ -28,7 +28,7 @@ class SkipFirstLinesFilter extends FilterInterface
         $this->linesToSkip = $n;
     }
 
-    public function filter(&$row)
+    public function filter($row)
     {
         if ($this->linesToSkip != 0) {
             --$this->linesToSkip;

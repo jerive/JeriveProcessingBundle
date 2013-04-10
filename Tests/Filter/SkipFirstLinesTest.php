@@ -3,15 +3,14 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Filter;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\SkipFirstLinesFilter;
-use Jerive\Bundle\FileProcessingBundle\Processing\Exception\SkipException;
 
 /**
  * @author jviveret
  */
-class SkipFirstLinesFilterTest extends PHPUnit_Framework_Testcase
+class SkipFirstLinesFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException SkipException
+     * @expectedException \Jerive\Bundle\FileProcessingBundle\Processing\Exception\SkipException
      */
     public function testWillHaveLineException()
     {

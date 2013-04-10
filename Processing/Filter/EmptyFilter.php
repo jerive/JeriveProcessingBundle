@@ -35,7 +35,7 @@ class EmptyFilter extends AbstractFilter
      * @throws RuntimeException if the row is empty
      * @return mixed
      */
-    public function filter(&$row)
+    public function filter($row)
     {
         // Do not process empty rows
         if (empty($row) || implode('', array_map('trim', $row)) == '') {

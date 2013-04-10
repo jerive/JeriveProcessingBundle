@@ -7,7 +7,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Filter;
  *
  * @author jviveret
  */
-class EncodingFilter extends FilterAbstract
+class EncodingFilter extends AbstractFilter
 {
     /**
      * Input encoding
@@ -86,7 +86,7 @@ class EncodingFilter extends FilterAbstract
      * @param array  $array Array of strings to convert
      * @return array
      */
-    public function filter(&$row)
+    public function filter($row)
     {
         $return = array();
 

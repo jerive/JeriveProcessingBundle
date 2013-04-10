@@ -3,7 +3,7 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Filter;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Jerive\Bundle\FileProcessingBundle\Processing\BaseIterator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Description of Abstract
@@ -13,12 +13,9 @@ use Jerive\Bundle\FileProcessingBundle\Processing\BaseIterator;
 abstract class AbstractFilter implements FilterInterface, EventSubscriberInterface
 {
     /**
-     * The parent, to be able to interact
-     * with other filters if needed
-     *
-     * @var BaseIterator
+     * @var EventDispatcherInterface
      */
-    protected $processing;
+    protected $dispatcher;
 
     /**
      * Initialize filter with options,
@@ -37,9 +34,9 @@ abstract class AbstractFilter implements FilterInterface, EventSubscriberInterfa
      * @param BaseIterator $processing
      * @return AbstractFilter
      */
-    public function setProcessing(BaseIterator $processing)
+    public function setDispatcher(EventDispatcherInterface $dispatcher)
     {
-        $this->processing = $processing;
+        $this->dispatcher = $dispatcher;
 
         return $this;
     }

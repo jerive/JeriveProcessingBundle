@@ -4,7 +4,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Filter;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\EncodingFilter;
 
-class EncodingFilterTest extends PHPUnit_Framework_Testcase
+class EncodingFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerEncoding
