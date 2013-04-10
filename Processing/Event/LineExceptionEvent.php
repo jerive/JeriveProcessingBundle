@@ -23,6 +23,7 @@ class LineExceptionEvent extends LineEvent
     public function setException(\Exception $e)
     {
         $this->exception = $e;
+        return $this;
     }
 
     /**

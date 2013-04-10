@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="jerive_processing.class">Jerive\Bundle\FileProcessingBundle\Standard</parameter>
+        <parameter key="jerive_processing.class">Jerive\Bundle\FileProcessingBundle\BaseIterator</parameter>
         <parameter key="jerive_processing.dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
     </parameters>
 

@@ -35,16 +35,23 @@ class CsvReader implements Iterator
     protected $current;
 
     /**
+     * @var string
+     */
+    protected $filename;
+
+    /**
      *
      * @param string $fileName
      */
-    protected function __construct($fileName)
+    protected function __construct($filename)
     {
-        if (file_exists($fileName) && is_file($fileName)) {
-            $this->handle = fopen($fileName, 'r');
-            $this->path = $fileName;
+        $this->filename = $filename;
+
+        if (file_exists($filename) && is_file($filename)) {
+            $this->handle = fopen($filename, 'r');
+            $this->path = $filename;
         } else {
-            throw new \RuntimeException(sprintf('Could not open "%s"', $fileName));
+            throw new \RuntimeException(sprintf('Could not open "%s"', $filename));
         }
     }
 
@@ -90,6 +97,7 @@ class CsvReader implements Iterator
 
         if (strpos($this->path, 'ftp://') !== false) {
             // Don't rewind on streams not supporting it
+            $this->__construct($this->filename);
             return true;
         } else {
             return rewind($this->handle);

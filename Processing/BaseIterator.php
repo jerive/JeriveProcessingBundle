@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Jérôme Viveret <jviveret@consoneo.com>
  */
-class Standard implements \IteratorAggregate
+class BaseIterator implements \Iterator
 {
     /**
      * Events triggered during process
@@ -50,7 +50,7 @@ class Standard implements \IteratorAggregate
     /**
      * The iterator
      *
-     * @var Iterator
+     * @var \Iterator
      */
     protected $iterator;
 
@@ -59,6 +59,16 @@ class Standard implements \IteratorAggregate
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
+
+    /**
+     * @var int
+     */
+    protected $key = 0;
+
+    /**
+     * @var mixed
+     */
+    protected $current = null;
 
     /**
      * Public constructor
@@ -72,10 +82,18 @@ class Standard implements \IteratorAggregate
     }
 
     /**
+     * @return EventDispatcherInterface
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
+    }
+
+    /**
      * Adds a row filter
      *
      * @param Filter\FilterInterface | string $filter | array name => filter
-     * @return Standard
+     * @return BaseIterator
      */
     public function addFilter($filter, $options = array())
     {
@@ -102,7 +120,7 @@ class Standard implements \IteratorAggregate
      * Adds several row filters
      *
      * @param array $filters
-     * @return Standard
+     * @return BaseIterator
      */
     public function setFilters($filters = array())
     {
@@ -170,6 +188,7 @@ class Standard implements \IteratorAggregate
         if (!isset($this->iterator)) {
             throw new \RuntimeException('You have to set an iterator');
         }
+
         return $this->iterator;
     }
 
@@ -177,7 +196,7 @@ class Standard implements \IteratorAggregate
      * Process each element of the iterator
      *
      * @throws RuntimeException
-     * @return Standard
+     * @return BaseIterator
      */
     public function process()
     {
@@ -186,18 +205,7 @@ class Standard implements \IteratorAggregate
             new Event\StartEvent($this)
         );
 
-        foreach ($this as $index => $rowRaw) {
-            $this->dispatcher->dispatch(
-                self::EVENT_LINE_PROCESSING,
-                new Event\LineEvent($index + 1, $rowRaw)
-            );
-            try {
-                $this->dispatcher->dispatch(
-                    self::EVENT_LINE_PROCESSED,
-                    new Event\LineEvent($index + 1, $rowRaw, $this->filter($rowRaw, $index + 1))
-                );
-            } catch (Exception $e) { }
-        }
+        foreach ($this as $element) { }
 
         $this->dispatcher->dispatch(self::EVENT_PROCESS_FINISHED);
 
@@ -234,6 +242,59 @@ class Standard implements \IteratorAggregate
         }
 
         return $rowFiltered;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function current()
+    {
+        return $this->current;
+    }
+
+    public function key()
+    {
+        return $this->key;
+    }
+
+    public function next()
+    {
+        return $this->iterator->next();
+    }
+
+    public function rewind()
+    {
+        $this->key = 0;
+        $this->iterator->rewind();
+    }
+
+    public function valid()
+    {
+        $parentValid = $this->iterator->valid();
+
+    }
+
+    protected function getNext()
+    {
+        $rowRaw = $this->iterator->current();
+        $key    = $this->iterator->key();
+
+        $this->dispatcher->dispatch(
+            self::EVENT_LINE_PROCESSING,
+            new Event\LineEvent($key, $rowRaw)
+        );
+
+        try {
+            $rowFiltered = $this->filter($rowRaw, $key + 1);
+            $this->dispatcher->dispatch(
+                self::EVENT_LINE_PROCESSED,
+                new Event\LineEvent($key + 1, $rowRaw, $rowFiltered)
+            );
+            return $rowFiltered;
+        } catch (\Exception $e) {
+            $this->iterator->next();
+            return $this->getNext();
+        }
     }
 
     public function __sleep()

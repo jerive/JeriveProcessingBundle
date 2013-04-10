@@ -8,7 +8,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Filter;
 interface FilterInterface
 {
     /**
-     * Filter function. Called in Standard::process
+     * Filter function. Called in BaseIterator::process
      *
      * @param mixed $row The item to filter
      * @throws SkipException
