@@ -97,6 +97,7 @@ class CsvReader implements \Iterator
 
         if (strpos($this->path, 'ftp://') !== false) {
             // Don't rewind on streams not supporting it
+            fclose($this->handle);
             $this->__construct($this->filename);
             return true;
         } else {
