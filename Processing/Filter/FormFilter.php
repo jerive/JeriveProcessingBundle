@@ -40,7 +40,7 @@ class FormFilter extends AbstractFilter
      * @param mixed $row
      * @return mixed
      */
-    public function filter(&$row)
+    public function filter($row)
     {
         $this->form->bind($row);
         if ($this->form->isValid($row)) {

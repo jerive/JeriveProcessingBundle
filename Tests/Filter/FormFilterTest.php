@@ -12,7 +12,7 @@ class FormFilterTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Jerive\Bundle\FileProcessingBundle\Processing\Exception\FailedValidationException
      * @covers \Jerive\Bundle\FileProcessingBundle\Processing\Filter\AbstractFilter
-     * @covers FormFilter
+     * @covers \Jerive\Bundle\FileProcessingBundle\Processing\Filter\FormFilter
      */
     public function testWillFail()
     {
@@ -23,7 +23,7 @@ class FormFilterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \Jerive\Bundle\FileProcessingBundle\Processing\Filter\AbstractFilter
-     * @covers FormFilter
+     * @covers \Jerive\Bundle\FileProcessingBundle\Processing\Filter\FormFilter
      */
     public function testWillNotFail()
     {
