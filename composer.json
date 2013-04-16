@@ -10,8 +10,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-	"symfony/event-dispatcher": "v2.*",
-        "symfony/form": "v2.*"
+	"symfony/event-dispatcher": "*",
+        "symfony/form": "*"
     },
     "require-dev": {
         "mikey179/vfsStream": "v1.2.0"
