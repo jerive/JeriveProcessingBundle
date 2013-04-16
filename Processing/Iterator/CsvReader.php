@@ -22,6 +22,9 @@ class CsvReader implements \Iterator
 
     protected $csvEscape = '\\';
 
+    /**
+     * @var string
+     */
     protected $path;
 
     /**
@@ -35,18 +38,11 @@ class CsvReader implements \Iterator
     protected $current;
 
     /**
-     * @var string
-     */
-    protected $filename;
-
-    /**
      *
      * @param string $fileName
      */
     protected function __construct($filename)
     {
-        $this->filename = $filename;
-
         if (file_exists($filename) && is_file($filename)) {
             $this->handle = fopen($filename, 'r');
             $this->path = $filename;
@@ -73,7 +69,6 @@ class CsvReader implements \Iterator
     }
 
     /**
-     *
      * @param string $csvDelimiter
      * @param string $csvEnclosure
      * @param string $csvEscape
@@ -98,7 +93,7 @@ class CsvReader implements \Iterator
         if (strpos($this->path, 'ftp://') !== false) {
             // Don't rewind on streams not supporting it
             fclose($this->handle);
-            $this->__construct($this->filename);
+            $this->__construct($this->path);
             return true;
         } else {
             return rewind($this->handle);
@@ -130,5 +125,4 @@ class CsvReader implements \Iterator
     {
         return !feof($this->handle);
     }
-
 }
