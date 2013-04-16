@@ -9,6 +9,11 @@ use Symfony\Component\EventDispatcher\Event;
 use Jerive\Bundle\FileProcessingBundle\Processing\BaseIterator;
 use Jerive\Bundle\FileProcessingBundle\Processing\Iterator\CsvReader;
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\CallbackFilter;
+use Jerive\Bundle\FileProcessingBundle\Processing\FilterResolver;
+
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
 
 class BaseIteratorTest extends \PHPUnit_Framework_TestCase
     implements EventSubscriberInterface
@@ -17,9 +22,18 @@ class BaseIteratorTest extends \PHPUnit_Framework_TestCase
 
     public function testSimple()
     {
-        $processing = new BaseIterator(new EventDispatcher);
+        $csv = <<<csv
+toto|toto
+lolo|lolo
+csv;
+
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('imports'));
+        file_put_contents($file = vfsStream::url('imports/test.csv'), $csv);
+
+        $processing = new BaseIterator(new EventDispatcher, new FilterResolver);
         $processing->setIterator(
-            $reader = CsvReader::factory('')
+            $reader = CsvReader::factory($file)
         );
 
         $processing->addFilter('callback', array('callback' => 'array_merge'));
@@ -31,13 +45,13 @@ class BaseIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSimpleWillFailIfNoIteratorIsSet()
     {
-        $processing = new BaseIterator(new EventDispatcher);
+        $processing = new BaseIterator(new EventDispatcher, new FilterResolver);
         $processing->process();
     }
 
     public function testWillDispatchErrorOnFailure()
     {
-        $processing = new BaseIterator(new EventDispatcher);
+        $processing = new BaseIterator(new EventDispatcher, new FilterResolver);
         $processing->addFilter(new CallbackFilter(array(
             'callback' => array($this, 'willThrowException'),
         )));

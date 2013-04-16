@@ -3,6 +3,7 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Jerive\Bundle\FileProcessingBundle\Processing\FilterResolver;
 
 /**
  * Aims to manage batch processing with the following features:
@@ -55,10 +56,14 @@ class BaseIterator implements \Iterator
     protected $iterator;
 
     /**
-     *
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
+
+    /**
+     * @var FilterResolver
+     */
+    protected $resolver;
 
     /**
      * @var int
@@ -76,9 +81,10 @@ class BaseIterator implements \Iterator
      * @param string    $filename
      * @return void
      */
-    public function __construct(EventDispatcherInterface $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher, FilterResolver $resolver)
     {
         $this->dispatcher = $dispatcher;
+        $this->resolver   = $resolver;
     }
 
     /**
@@ -101,6 +107,7 @@ class BaseIterator implements \Iterator
             if (is_array($filter)) {
                 foreach($filter as $key => $filter) break;
             }
+            $class = $this->resolver->resolve($filter);
             $filter = new $class($options);
         }
 
@@ -285,10 +292,10 @@ class BaseIterator implements \Iterator
         );
 
         try {
-            $rowFiltered = $this->filter($rowRaw, $key + 1);
+            $rowFiltered = $this->filter($rowRaw, $key);
             $this->dispatcher->dispatch(
                 self::EVENT_LINE_PROCESSED,
-                new Event\LineEvent($key + 1, $rowRaw, $rowFiltered)
+                new Event\LineEvent($key, $rowRaw, $rowFiltered)
             );
             return $rowFiltered;
         } catch (\Exception $e) {

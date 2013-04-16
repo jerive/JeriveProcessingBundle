@@ -15,7 +15,7 @@ class CallbackFilter extends AbstractFilter
      * @var callable
      */
     protected $importMethod = array(
-        'Jerive\\Bundle\\FileProcessingBundle\\Processing\Filter\\Callback',
+        'Jerive\\Bundle\\FileProcessingBundle\\Processing\\Filter\\CallbackFilter',
         'notDefined',
     );
 

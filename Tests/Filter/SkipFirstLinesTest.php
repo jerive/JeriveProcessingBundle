@@ -3,6 +3,7 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Tests\Filter;
 
 use Jerive\Bundle\FileProcessingBundle\Processing\Filter\SkipFirstLinesFilter;
+use Jerive\Bundle\FileProcessingBundle\Processing\Exception\SkipException;
 
 /**
  * @author jviveret

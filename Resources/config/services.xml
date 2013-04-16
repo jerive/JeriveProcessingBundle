@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="jerive_processing.class">Jerive\Bundle\FileProcessingBundle\Processing\BaseIterator</parameter>
         <parameter key="jerive_processing.dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
+        <parameter key="jerive_processing.resolver.class">Jerive\Bundle\FileProcessingBundle\Processing\FilterResolver</parameter>
     </parameters>
 
     <services>
@@ -17,6 +18,9 @@
         </service>
         <service scope="prototype" id="jerive_processing" class="%jerive_processing.class%">
             <argument type="service" id="jerive_processing.dispatcher" />
+            <argument type="service">
+                <service class="%jerive_processing.resolver.class%"></service>
+            </argument>
         </service>
     </services>
 </container>
