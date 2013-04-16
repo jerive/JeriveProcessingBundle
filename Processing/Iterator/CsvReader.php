@@ -60,9 +60,9 @@ class CsvReader implements \Iterator
      * @param string $csvEscape
      * @return CsvReader
      */
-    public static function factory($fileName, $csvDelimiter = ';', $csvEnclosure = '"', $csvEscape = '\\')
+    public static function factory($filename, $csvDelimiter = ';', $csvEnclosure = '"', $csvEscape = '\\')
     {
-        $file = new self($fileName);
+        $file = new self($filename);
         $file->setCsvControl($csvDelimiter, $csvEnclosure, $csvEscape);
 
         return $file;

@@ -22,7 +22,7 @@ use Jerive\Bundle\FileProcessingBundle\Processing\FilterResolver;
  *
  * @author Jérôme Viveret <jviveret@consoneo.com>
  */
-class BaseIterator implements \Iterator
+class BaseIterator implements \IteratorAggregate
 {
     /**
      * Events triggered during process
@@ -212,7 +212,21 @@ class BaseIterator implements \Iterator
             new Event\StartEvent($this)
         );
 
-        foreach ($this as $element) { }
+        foreach ($this->getIterator() as $key => $rowRaw) {
+            $this->dispatcher->dispatch(
+                self::EVENT_LINE_PROCESSING,
+                new Event\LineEvent($key, $rowRaw)
+            );
+
+            try {
+                $rowFiltered = $this->filter($rowRaw, $key);
+                $this->dispatcher->dispatch(
+                    self::EVENT_LINE_PROCESSED,
+                    new Event\LineEvent($key, $rowRaw, $rowFiltered)
+                );
+                return $rowFiltered;
+            } catch (\Exception $e) { }
+        }
 
         $this->dispatcher->dispatch(self::EVENT_PROCESS_FINISHED);
 
@@ -249,59 +263,6 @@ class BaseIterator implements \Iterator
         }
 
         return $rowFiltered;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function current()
-    {
-        return $this->current;
-    }
-
-    public function key()
-    {
-        return $this->key;
-    }
-
-    public function next()
-    {
-        return $this->iterator->next();
-    }
-
-    public function rewind()
-    {
-        $this->key = 0;
-        $this->getIterator()->rewind();
-    }
-
-    public function valid()
-    {
-        $parentValid = $this->getIterator()->valid();
-
-    }
-
-    protected function getNext()
-    {
-        $rowRaw = $this->getIterator()->current();
-        $key    = $this->getIterator()->key();
-
-        $this->dispatcher->dispatch(
-            self::EVENT_LINE_PROCESSING,
-            new Event\LineEvent($key, $rowRaw)
-        );
-
-        try {
-            $rowFiltered = $this->filter($rowRaw, $key);
-            $this->dispatcher->dispatch(
-                self::EVENT_LINE_PROCESSED,
-                new Event\LineEvent($key, $rowRaw, $rowFiltered)
-            );
-            return $rowFiltered;
-        } catch (\Exception $e) {
-            $this->getIterator()->next();
-            return $this->getNext();
-        }
     }
 
     public function __sleep()

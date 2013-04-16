@@ -1,14 +1,4 @@
-# Bootstrap
-app/bootstrap*
-
-# Symfony directories
+# Composer/phpunit directories
 vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
+coverage
 composer.lock
-
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml

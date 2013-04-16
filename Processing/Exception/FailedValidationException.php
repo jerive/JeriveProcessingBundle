@@ -4,7 +4,7 @@ namespace Jerive\Bundle\FileProcessingBundle\Processing\Exception;
 
 use Symfony\Component\Form\FormError;
 
-class FailedValidationException extends Exception
+class FailedValidationException extends \Exception
 {
     /**
      * @var array<FormError>
