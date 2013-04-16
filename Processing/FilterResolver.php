@@ -46,7 +46,7 @@ class FilterResolver
                 }
             }
         }
-die;
+
         throw new \RuntimeException(sprintf('Could not find filter %s', $shortname));
     }
 }
