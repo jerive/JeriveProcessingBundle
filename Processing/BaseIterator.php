@@ -224,7 +224,6 @@ class BaseIterator implements \IteratorAggregate
                     self::EVENT_LINE_PROCESSED,
                     new Event\LineEvent($key, $rowRaw, $rowFiltered)
                 );
-                return $rowFiltered;
             } catch (\Exception $e) { }
         }
 
