@@ -24,4 +24,14 @@ class FailedValidationException extends \Exception
     {
         return $this->constraintViolations;
     }
+
+    public function getViolationsAsString()
+    {
+        $violations = array();
+        foreach($this->constraintViolations as $violation) {
+            $violations[] = $violation->getPropertyPath() . ':' . $violation->getInvalidValue() . ':' . $violation->getMessage();
+        }
+
+        return implode("\n", $violations);
+    }
 }
