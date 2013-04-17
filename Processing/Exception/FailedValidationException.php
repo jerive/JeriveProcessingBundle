@@ -2,22 +2,26 @@
 
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Exception;
 
-use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class FailedValidationException extends \Exception
 {
     /**
-     * @var array<FormError>
+     * @var ConstraintViolationList
      */
-    protected $validationErrors;
+    protected $constraintViolations;
 
-    public function setValidationErrors($errors)
+    /**
+     * @param ConstraintViolationList $list
+     */
+    public function setConstraintViolations(ConstraintViolationList $list)
     {
-        $this->validationErrors = $errors;
+        $this->constraintViolations = $list;
+        return $this;
     }
 
-    public function getValidationErrors()
+    public function getConstraintViolations()
     {
-        return $this->validationErrors;
+        return $this->constraintViolations;
     }
 }
