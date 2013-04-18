@@ -3,6 +3,7 @@
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Filter;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
@@ -24,9 +25,17 @@ class EntityMapFilter extends MapFilter
      */
     protected $accessor;
 
+    protected $transforms = array();
+
     public function setEntityClass($class)
     {
         $this->entityClass = $class;
+        return $this;
+    }
+
+    public function setTransforms($transforms = array())
+    {
+        $this->transforms = $transforms;
         return $this;
     }
 
@@ -38,18 +47,13 @@ class EntityMapFilter extends MapFilter
 
         $row      = parent::filter($row);
         $entity   = new $this->entityClass;
-        //$reflection = new \ReflectionObject($entity);
 
         foreach($row as $key => $value) {
-            $this->accessor->setValue($entity, $key, $value);
-
-//            if ($reflection->hasProperty($key)) {
-//                $property = $reflection->getProperty($key);
-//                $property->setAccessible(true);
-//                $property->setValue($entity, $value);
-//            } else {
-//                $entity->$key = $value;
-//            }
+            try {
+                $this->accessor->setValue($entity, $key, $value);
+            } catch (NoSuchPropertyException $e) {
+                $entity->$key = $value;
+            }
         }
 
         return $entity;
