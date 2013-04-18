@@ -106,6 +106,8 @@ class BaseIterator implements \IteratorAggregate
         if (!$filter instanceof Filter\FilterInterface) {
             if (is_array($filter)) {
                 foreach($filter as $key => $filter) break;
+            } else {
+                $key = $filter;
             }
             $class = $this->resolver->resolve($filter);
             $filter = new $class($options);
