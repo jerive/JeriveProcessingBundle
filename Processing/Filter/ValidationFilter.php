@@ -23,12 +23,23 @@ class ValidationFilter extends AbstractFilter
     protected $groups = array();
 
     /**
+     * @var boolean
+     */
+    protected $cascade = true;
+
+    /**
      * @param ValidatorInterface $validator
      * @return ValidationFilter
      */
     public function setValidator(ValidatorInterface $validator)
     {
         $this->validator = $validator;
+        return $this;
+    }
+
+    public function setCascade($cascade)
+    {
+        $this->cascade = $cascade;
         return $this;
     }
 
@@ -62,7 +73,7 @@ class ValidationFilter extends AbstractFilter
      */
     public function filter($row)
     {
-        $list = $this->getValidator()->validate($row, $this->groups);
+        $list = $this->getValidator()->validate($row, $this->groups, true, true);
 
         if ($list->count() === 0) {
             return $row;

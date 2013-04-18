@@ -2,6 +2,8 @@
 
 namespace Jerive\Bundle\FileProcessingBundle\Processing\Filter;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 
@@ -17,6 +19,11 @@ class EntityMapFilter extends MapFilter
      */
     protected $entityClass;
 
+    /**
+     * @var \Symfony\Component\PropertyAccess\PropertyAccessor
+     */
+    protected $accessor;
+
     public function setEntityClass($class)
     {
         $this->entityClass = $class;
@@ -25,18 +32,24 @@ class EntityMapFilter extends MapFilter
 
     public function filter($row)
     {
-        $row = parent::filter($row);
-        $entity     = new $this->entityClass;
-        $reflection = new \ReflectionObject($entity);
+        if (!isset($this->accessor)) {
+            $this->accessor = PropertyAccess::getPropertyAccessor();
+        }
+
+        $row      = parent::filter($row);
+        $entity   = new $this->entityClass;
+        //$reflection = new \ReflectionObject($entity);
 
         foreach($row as $key => $value) {
-            if ($reflection->hasProperty($key)) {
-                $property = $reflection->getProperty($key);
-                $property->setAccessible(true);
-                $property->setValue($entity, $value);
-            } else {
-                $entity->$key = $value;
-            }
+            $this->accessor->setValue($entity, $key, $value);
+
+//            if ($reflection->hasProperty($key)) {
+//                $property = $reflection->getProperty($key);
+//                $property->setAccessible(true);
+//                $property->setValue($entity, $value);
+//            } else {
+//                $entity->$key = $value;
+//            }
         }
 
         return $entity;

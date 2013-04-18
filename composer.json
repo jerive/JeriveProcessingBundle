@@ -11,7 +11,8 @@
     "minimum-stability": "dev",
     "require": {
 	"symfony/event-dispatcher": "*",
-        "symfony/validator": "*"
+        "symfony/validator": "*",
+        "symfony/property-access": "*"
     },
     "require-dev": {
         "mikey179/vfsStream": "v1.2.0"
